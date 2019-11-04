@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Google Maps API key: 
+  -- AIzaSyBkCdxeHknqlrDAWhnxAdlErZslXv_oXBY
+  -->
+
+<head>
+    <title>
+        Cafe Finder
+    </title>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 400px;
+            width: 400px;
+        }
+
+        .circle-div {
+            border-radius: 50%;
+        }
+
+        .main-container {
+            display: flex;
+            text-align: center;
+            align-items: center;
+        }
+
+        .mapHeading {
+            font-size: 2px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="./cafe.js"></script>
+    <script src="./starRating.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></style>
+
+</head>
+
+<body>
+    <script></script>
+    <div class="main-container cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">Cafe Finder</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link" href="#">Top</a>
+                    <a class="nav-link active" href="#">Map</a>
+                    <a class="nav-link" href="#">Favs</a>
+                </nav>
+            </div>
+        </header>
+        <div id="map" class="circle-div"></div>
+        <div id="movable" trigger="0"></div>
+        <script>
+            // pre-load list of cafes
+            
+            // Initialize and add the map
+            var pdx = { lat: 45.5, lng: -122.6 };
+
+            function initMap() {
+                let aCafe = new Cafe(
+                    "Coffeehouse Five",
+                    45.5632969,
+                    -122.6754892,
+                    10001,
+                    5,
+                    2,
+                    4
+                );
+
+                let bCafe = new Cafe(
+                    "Papaccino\'s",
+                    45.479338,
+                    -122.619291,
+                    10002,
+                    4,
+                    3,
+                    4
+                );
+
+                var myOptions = {
+                    zoom: 10,
+                    center: pdx,
+                    mapTypeControlOptions: {
+                        mapTypeIds: [google.maps.MapTypeId.ROADMAP]
+                    }, // here´s the array of controls
+                    disableDefaultUI: true, // a way to quickly hide all controls
+                    mapTypeControl: true,
+                    scaleControl: false,
+                    zoomControl: false,
+                    zoomControlOptions: {
+                        style: google.maps.ZoomControlStyle.LARGE
+                    },
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+
+                var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+                let markerA = new google.maps.Marker({
+                    position: { lat: 45.5623969,lng: -122.6754892 },
+                    map: map,
+                    title: 'Coffeehouse Five'
+                });
+
+                let markerB = new google.maps.Marker({
+                    position: { lat: 45.479338, lng: -122.619291 },
+                    map: map,
+                    title: 'Papaccino\'s'
+                });
+
+                var contentStringA = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    `<h1 id="mapHeading" style="font-size: 14px;">${aCafe.name}</h1>` +
+                    '<div id="bodyContent">' +
+                    `<p> Cool: <star-rating rating="${aCafe.coolRating}"></star-rating></p>` +
+                    `<p> Environment: <star-rating rating="${aCafe.envRating}"></star-rating></p>` +
+                    `<p> Price: <star-rating rating="${aCafe.priceRating}"></star-rating></p>` +
+                    '</div>' +
+                    '</div>';
+
+                var contentStringB = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    `<h1 id="mapHeading" style="font-size: 14px;">${bCafe.name}</h1>` +
+                    '<div id="bodyContent">' +
+                    `<p> Cool: <star-rating rating="${bCafe.coolRating}"></star-rating></p>` +
+                    `<p> Environment: <star-rating rating="${bCafe.envRating}"></star-rating></p>` +
+                    `<p> Price: <star-rating rating="${bCafe.priceRating}"></star-rating></p>` +
+                    '</div>' +
+                    '</div>';
+
+                var infowindowA = new google.maps.InfoWindow({
+                    content: contentStringA
+                });
+
+                markerA.addListener('click', function () {
+                    infowindowA.open(map, markerA);
+                });
+
+
+                var infowindowB = new google.maps.InfoWindow({
+                    content: contentStringB
+                });
+
+                markerB.addListener('click', function () {
+                    infowindowB.open(map, markerB);
+                });
+            }
+        </script>
+        <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkCdxeHknqlrDAWhnxAdlErZslXv_oXBY&callback=initMap">
+            </script>
+            <button>Add</button>
+
+
+</body>
+
+
+</html>
